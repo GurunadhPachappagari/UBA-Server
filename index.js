@@ -1,18 +1,37 @@
 const express = require('express');
 const cors = require("cors");
 const app = express();
+app.use( express.json() );
+app.use( cors() );
 const PORT = 8080;
+const HOST = '192.168.1.197';
 const fs=require('fs');
 const req = require('express/lib/request');
 const Helpers = require('./js/CalcData.js');
 
-app.use( express.json() );
-app.use( cors() );
+///////////////////////////
 
-app.listen(
-    PORT,
-    () => console.log(`it is alive on http://localhost:${PORT}`)
+// var http = require('http');
+var https = require('https');
+// var certificate = fs.readFileSync('/home/cclab/newssl2/STAR_iitpkd_ac_in.crt', 'utf8');
+var privateKey  = fs.readFileSync('/etc/pki/tls/certs/iitpkd.key', 'utf8');
+// var certificate = fs.readFileSync('/home/cclab/newssl2/STAR_iitpkd_ac_in.crt', 'utf8');
+var certificate = fs.readFileSync('/etc/pki/tls/certs/STAR_iitpkd_ac_in.crt', 'utf8');
+
+var credentials = {key: privateKey, cert: certificate};
+
+// your express configuration here
+
+// var httpServer = http.createServer(app);
+var httpsServer = https.createServer(credentials, app);
+
+// httpServer.listen(8443);
+httpsServer.listen(
+	PORT,HOST,
+    	() => console.log('it is alive on https://',HOST,':',PORT,'')
 );
+
+
 
 app.get('/', (req, res) => {
     res.status(200).send({
