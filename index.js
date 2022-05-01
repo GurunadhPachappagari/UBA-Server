@@ -8,6 +8,7 @@ const HOST = '192.168.1.197';
 const fs = require('fs');
 const req = require('express/lib/request');
 const Helpers = require('./js/CalcData.js');
+const MapHelpers = require('./js/MapCalc.js');
 
 ///////////////////////////
 
