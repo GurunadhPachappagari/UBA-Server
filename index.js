@@ -119,5 +119,5 @@ app.post('/map_vis', (req, res) => {
 
 app.post('/otp', (req, res) => {
     otp_val = OtpHelpers.sendOtp();
-    res.send({ "otp": otp_val });
+    res.send({ "otp": 'Success' });
 })
