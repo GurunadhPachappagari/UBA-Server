@@ -27,35 +27,9 @@ function sort_by_key(array, key) {
 }
 
 
-// var v1 = ["poverty_status", "house_type", "drainage_linked", "compost_pit"];
-// var colNAMES = [];
-// var file_name;
-// var ids = document.querySelectorAll('[id]');
-
-// document.getElementById("m1").innerHTML = "Map Visualization";
-// document.getElementById("m2").innerHTML = "The maps are only shown for the pie chart columns ";
-// map_func("./assets/survey_data/Pudussery.xlsx","poverty_status")
-
-// map_func("./assets/survey_data/Pudussery.xlsx","education")
-
-// map_func1("./assets/survey_data/Pudussery.xlsx","poverty_status")
 
 
 function map_func(file_path, col_name) {
-    // var file_path = "./assets/survey_data/Pudussery.xlsx";
-    //  document.getElementById("demo").innerHTML = "hey ";
-    // const response = await fetch(file_path);
-    // const data = await response.arrayBuffer();
-    // var values;
-    // var workbook = XLSX.read(new Uint8Array(data), {
-    //     type: 'array'
-    // });
-    // workbook.SheetNames.forEach(function(sheetName) {
-    //         values = XLSX.utils.sheet_to_row_object_array(workbook.Sheets[sheetName]);
-    //         // json_object = JSON.stringify(XL_row_object);
-    //     })
-    //   console.log("hellooyyy");
-    //   console.log(values);
 
     var workbook = XLSX.readFile(file_path);
     var sheet_name_list = workbook.SheetNames;
@@ -95,6 +69,16 @@ function map_func(file_path, col_name) {
         }
         var unique_village = village.filter(onlyUnique);
         var unique_state = state.filter(onlyUnique);
+        var uni_state = [];
+        for (var n = 0; n < unique_village.length; n = n + 1) {
+            for (var p = 0; p < values.length; p = p + 1) {
+                if (values[p]["village_name"] == unique_village[n]) {
+                    uni_state.push(values[p]["state"]);
+                    break;
+                }
+            }
+        }
+        //console.log(uni_state);
         //console.log(unique_village);
         var latitude = [];
         var longitude = [];
@@ -116,7 +100,7 @@ function map_func(file_path, col_name) {
             for (var k = 0; k < max_len; k++) {
                 place = place + ans[k] + "+";
             }
-            place = place + unique_state + "+" + "India";
+            place = place + uni_state[j] + "+" + "India";
             //console.log(place)
             var json_res = httpGet("https://www.mapquestapi.com/geocoding/v1/address?key=3cRkGFGmfDZKypAWTPWKgJML7ZNeUqjg&location=" + place + ",&outFormat=csv");
             // console.log("^^^^^^^^^^^^^^^");
