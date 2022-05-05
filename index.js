@@ -1,28 +1,38 @@
 const express = require('express');
 const cors = require("cors");
 const app = express();
+app.use(express.json());
+app.use(cors());
 const PORT = 8080;
+const HOST = '192.168.1.197';
 const fs = require('fs');
 const req = require('express/lib/request');
 const Helpers = require('./js/CalcData.js');
 const MapHelpers = require('./js/MapCalc.js');
-const bodyParser = require('body-parser');
-const repo = require('./repository');
-const forPwd = require('./js/forgot.js');
 const OtpHelpers = require('./js/mail.js');
 var nodemailer = require('nodemailer');;
 
+///////////////////////////
 
-app.use(express.json());
-app.use(cors());
-app.use(bodyParser.urlencoded({ extended: true }))
-const users = require("./datastore");
+// var http = require('http');
+var https = require('https');
+// var certificate = fs.readFileSync('/home/cclab/newssl2/STAR_iitpkd_ac_in.crt', 'utf8');
+var privateKey = fs.readFileSync('/etc/pki/tls/certs/iitpkd.key', 'utf8');
+// var certificate = fs.readFileSync('/home/cclab/newssl2/STAR_iitpkd_ac_in.crt', 'utf8');
+var certificate = fs.readFileSync('/etc/pki/tls/certs/STAR_iitpkd_ac_in.crt', 'utf8');
+
+var credentials = { key: privateKey, cert: certificate };
 var otp_val = 0000;
 
-app.listen(
-    PORT,
-    () => console.log(`it is alive on http://localhost:${PORT}`)
+// your express configuration here
+
+// var httpServer = http.createServer(app);
+var httpsServer = https.createServer(credentials, app);
+httpsServer.listen(
+    PORT, HOST,
+    () => console.log('it is alive on https://', HOST, ':', PORT, '')
 );
+
 
 //
 const uploadPath = "./assets/survey_data/";
@@ -46,8 +56,6 @@ app.post('/data', (req, res) => {
     }
     res.send({ labels: ['neem', 'coconut'], values: [21, 32], type: 'pie' })
 })
-
-
 
 // resonding with the list of datasets available
 app.post('/file_paths', (req, res) => {
@@ -76,17 +84,6 @@ app.post('/get_stats', (req, res) => {
 
 // file uploads
 app.post("/upload_files", upload.array("files"), uploadFiles);
-
-function checkCredentials(mail, pwd) {
-    // const users = JSON.parse(data);
-    var length = users.length;
-    var password = users[length - 1].password;
-    // console.log(password);
-    if (mail != "uba@iitpkd.ac.in" || pwd != password) {
-        return false;
-    }
-    return true;
-}
 
 function uploadFiles(req, res) {
     var originalId = req.files[0].originalname;
