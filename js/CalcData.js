@@ -370,4 +370,4 @@ function CalcData(file_path) {
 // export { visualized_map, map_func };
 
 
-module.exports = { CalcData, GetStats }
+module.exports = { CalcData, GetStats, getData}

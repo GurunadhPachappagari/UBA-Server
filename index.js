@@ -85,6 +85,15 @@ app.post('/get_stats', (req, res) => {
 // file uploads
 app.post("/upload_files", upload.array("files"), uploadFiles);
 
+function CheckConfig(file_path){
+    var xldata = Helpers.getData();
+    if(xldata.length < 2){
+        return false;
+    }
+    return true;
+}
+
+
 function uploadFiles(req, res) {
     var originalId = req.files[0].originalname;
     var otp_entered = req.body.password;
@@ -104,7 +113,12 @@ function uploadFiles(req, res) {
                 console.log(err);
             }
         });
-        res.json({ message: "Successfully uploaded files" });
+        if(CheckConfig(uploadPath + originalId)){
+            res.json({ message: "Successfully uploaded files" });
+        }
+        else{
+            res.status(401).send();
+        }
     }
 }
 
