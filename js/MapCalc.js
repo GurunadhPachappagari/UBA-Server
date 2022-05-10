@@ -141,6 +141,13 @@ function map_func(file_path, col_name) {
         }
         var unique_val = val.filter(onlyUnique);
         // console.log(unique_val);
+        // console.log(unique_val.length);
+        for (var h = 0; h < unique_val.length; h++) {
+            if (unique_val[h] == undefined) {
+                unique_val[h] = "Null";
+            }
+        }
+        //console.log(unique_val);
 
         var an = [];
         for (var i = 0; i < unique_village.length; i++) {
@@ -162,7 +169,16 @@ function map_func(file_path, col_name) {
             //     counts[column_name] = unique_val[h];
             // }
             arr.forEach(el => counts[el] = 1 + (counts[el] || 0));
-            // console.log(counts);    
+            // console.log(counts);   
+            // for (var i = 0; i < arr.length; i++) {
+            //     var el = arr[i];
+            //     try {
+            //         el = el.trim();
+            //     } catch (err) {
+            //         continue;
+            //     }
+            //     counts[el] = 1 + (counts[el] || 0);
+            // }
             an.push(counts);
 
 
