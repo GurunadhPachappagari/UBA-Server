@@ -111,16 +111,18 @@ function uploadFiles(req, res) {
     } else {
         fs.rename(uploadPath + randId, uploadPath + originalId, function(err) {
             if (err) {
+                fs.unlinkSync(uploadPath + originalId);
                 console.log(err);
             }
+            else if (CheckConfig(uploadPath + originalId)){
+                res.json({ message: "Successfully uploaded files" });
+            }
+            else{
+                fs.unlinkSync(uploadPath + originalId);
+                res.status(401).send();
+            }
+            otp_val = Math.floor(1000 + Math.random()*9000);
         });
-        if(CheckConfig(uploadPath + originalId)){
-            res.json({ message: "Successfully uploaded files" });
-        }
-        else{
-            res.status(401).send();
-        }
-        otp_val = Math.floor(1000 + Math.random()*9000);
     }
 }
 
