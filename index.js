@@ -86,7 +86,7 @@ app.post('/get_stats', (req, res) => {
 app.post("/upload_files", upload.array("files"), uploadFiles);
 
 function CheckConfig(file_path){
-    var xldata = Helpers.getData();
+    var xldata = Helpers.getData(file_path);
     if(xldata.length < 2){
         return false;
     }
@@ -106,6 +106,7 @@ function uploadFiles(req, res) {
         console.log("unequal");
         fs.unlinkSync(uploadPath + randId);
         res.status(400).send();
+        otp_val = Math.floor(1000 + Math.random()*9000);
         return;
     } else {
         fs.rename(uploadPath + randId, uploadPath + originalId, function(err) {
@@ -119,6 +120,7 @@ function uploadFiles(req, res) {
         else{
             res.status(401).send();
         }
+        otp_val = Math.floor(1000 + Math.random()*9000);
     }
 }
 

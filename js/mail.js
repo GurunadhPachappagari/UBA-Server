@@ -13,7 +13,7 @@ function sendOtp() {
     const otp = `${Math.floor(1000 + Math.random() * 9000)}`;
     var mailOptions = {
         from: 'ubawebsiteiitpkd@gmail.com',
-        to: 'mahithasannala82@gmail.com',
+        to: 'gurunadh.pg123@gmail.com',
         subject: "OTP for verification",
         html: `<p> Enter <b>${otp}</b> in the page to upload the files</p>`,
     };
